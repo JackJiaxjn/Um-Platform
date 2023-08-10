@@ -1,5 +1,5 @@
 package com.sky.context;
-//上下文相关的类
+//上下文相关的类，也是工具类
 public class BaseContext {
 
     public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();

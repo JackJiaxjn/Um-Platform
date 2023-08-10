@@ -1,7 +1,10 @@
 package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
@@ -9,9 +12,12 @@ import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -27,6 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
+
+        //这个明文密码需要修改，用md5摘要算法
         String password = employeeLoginDTO.getPassword();
 
         //1、根据用户名查询数据库中的数据
@@ -39,7 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
+        //  对前端传过来的明文进行md5加密，然后再进行比对 代码如下
+         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
@@ -53,5 +62,39 @@ public class EmployeeServiceImpl implements EmployeeService {
         //3、返回实体对象
         return employee;
     }
+   /*
+   * 实现新增员工信息的方法
+   * */
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
 
+        //输出一个当前线程的id,动态获取id
+        System.out.println("当前线程的id:"+Thread.currentThread().getId());
+
+
+        //这里EmployeeDTO是封装类，最终要实现还要转换成实体类Employee
+        //也就是对象属性拷贝,从employeeDTO对象属性拷贝给employee
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        //employee中的有些属性employeeDTO没有，所以要单独设置
+
+        //设置账号状态，默认账号是正常状态 1表示正常 0表示锁定
+        employee.setStatus(StatusConstant.ENABLE);//这里填已经定义的常量类
+
+        //设置密码，默认密码13456，密码需要加密，要用到DigestUtils.md5DigestAsHex("密码“.getBytes())
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes())); //也是调用已经设置好的常量密码
+
+        //设置当前记录的创建时间和修改时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        //设置当前记录创建人id和修改人id
+        //通过工具类在拦截器中获取的empId
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        //调用查询的方法
+        employeeMapper.insert(employee);
+
+    }
 }
