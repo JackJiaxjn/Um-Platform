@@ -38,8 +38,16 @@ public interface EmployeeMapper {
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
     /**
-     * 启用和禁用员工账号
+     * 启用和禁用员工 账号
      */
     //动态修改需要在mapper映射文件中写sql语句
     void update(Employee employee);
+
+
+    /**
+     * 根据id查询员工
+     */
+    @Select("select * from employee where id=#{id}")
+    Employee getById(Long id);
+
 }
