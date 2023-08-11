@@ -6,6 +6,7 @@ import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface EmployeeMapper {
@@ -36,7 +37,9 @@ public interface EmployeeMapper {
     //动态查询用映射文件来写sql语句
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
-
-
-
+    /**
+     * 启用和禁用员工账号
+     */
+    //动态修改需要在mapper映射文件中写sql语句
+    void update(Employee employee);
 }
