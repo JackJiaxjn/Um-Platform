@@ -1,16 +1,20 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -96,5 +101,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         //调用查询的方法
         employeeMapper.insert(employee);
 
+    }
+    /*
+    * 员工分页查询实现方法
+    * */
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        //分页查询select * from emp limit 0,10 maven中已经引入了分页查询的插件
+        //用插件开始分页查询,获取分页后的页数和页面大小
+        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        //这里会返回Page的对象
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+        //这里page可以直接获取PageResult中的属性
+        long total = page.getTotal();//获取查询的页总数
+        List<Employee> records = page.getResult();//获取查询出的页面数据集合
+
+        return new PageResult(total,records);
     }
 }

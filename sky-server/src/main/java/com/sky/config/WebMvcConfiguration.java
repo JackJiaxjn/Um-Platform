@@ -1,10 +1,13 @@
 package com.sky.config;
 
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -14,6 +17,8 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.List;
 
 /**
  * 配置类，注册web层相关组件
@@ -69,5 +74,22 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //映射资源，访问时可以直接看到接口文档
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
+    /**
+     * 扩展SpringMvc框架的消息转换器
+     * 统一给后端给前端的数据进行处理，比例日期格式的统一格式
+     * 项目启动会自动执行这个方法
+     */
+    @Override
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {//这里是个容器
+        log.info("扩展消息转换器");
+        //创建消息转变器对象
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        //需要为消息转换器设置一个对象转换器，作用是将Java对象序列化为json数据
+        converter.setObjectMapper(new JacksonObjectMapper());
+        //将自己的消息转换器加入到容器中
+        converters.add(0,converter);//加个0表示自己设置的这个消息转换器优先使用
+
     }
 }
