@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * @ClassName AutoFill
- * @Description 自定义的注解，用于标识某个方法需要进行功能字段的填充处理
+ * @Description 自定义的注解，用于标识某个方法需要进行公共字段的填充处理
  * @Package com.sky.annotation
  * @Author Jia
  * @Date 2023/8/11 0011 21:07
