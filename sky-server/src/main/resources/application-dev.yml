@@ -11,3 +11,9 @@ sky:
     access-key-id: LTAI5tRVVNqMAN4VmPN1z1CJ
     access-key-secret: Qwzf3cHTkAgJU3NQQ1yL0ydyO4sTkO
     bucket-name: jack-jia
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 10
