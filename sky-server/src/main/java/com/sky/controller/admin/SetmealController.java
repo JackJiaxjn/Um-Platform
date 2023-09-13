@@ -87,7 +87,7 @@ public class SetmealController {
     }
 
     /*
-    * 套餐起售停售
+    * 套餐起售 停售
     * */
     @PostMapping("/status/{status}")
     @ApiOperation("套餐起售或停售")
