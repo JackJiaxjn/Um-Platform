@@ -1,6 +1,7 @@
 package com.sky.config;
 
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.interceptor.JwtTokenUserInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,12 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
-
+    /*员工拦截器*/
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
-
+    /*用户拦截器对象*/
+    @Autowired
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
     /**
      * 注册自定义拦截器
      *
@@ -40,6 +43,15 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
+
+        /*开始注册用户登录拦截器*/
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+
+                //获取店铺状态要排除，微信登录时已经获取了店铺状态
+                .excludePathPatterns("/user/shop/status");
+
     }
 
     /**

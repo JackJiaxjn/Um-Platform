@@ -40,12 +40,22 @@ sky:
     # 设置jwt签名加密时使用的秘钥
     admin-secret-key: itcast
     # 设置jwt过期时间
-    admin-ttl: 7200000
+    admin-ttl: 72000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
-    #配置阿里云存储
+
+    #设置微信登陆
+    user-secret-key: itmeima
+    user-ttl: 72000000
+    user-token-name: authentication
+
+  #配置阿里云存储
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.endpoint}
     access-key-secret: ${sky.alioss.endpoint}
     bucket-name: ${sky.alioss.endpoint}
+
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
