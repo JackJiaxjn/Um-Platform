@@ -21,7 +21,6 @@ import java.util.List;
  * @Date 2023/9/10 0010 18:02
  * @Version 17.0.7
  */
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RestController
 @RequestMapping("/admin/setmeal")
 @Slf4j
