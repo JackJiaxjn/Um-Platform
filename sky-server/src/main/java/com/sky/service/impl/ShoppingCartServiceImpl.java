@@ -92,8 +92,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
 
-
-
     }
     /*
     * 查看购物车*/
@@ -108,4 +106,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         List<ShoppingCart> ShoppingCard = shoppingCartMapper.list(shoppingCart);
         return ShoppingCard;
     }
+
+    /*
+    * 清空购物车
+    * */
+    @Override
+    public void delete() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.delete(userId);
+    }
+
+
 }
