@@ -12,10 +12,13 @@ import com.sky.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static ch.qos.logback.classic.spi.ThrowableProxyVO.build;
 
 /**
  * @ClassName ShoppingCardServiceImpl
@@ -91,5 +94,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 
 
+    }
+    /*
+    * 查看购物车*/
+    @Override
+    public List<ShoppingCart> showShoppingCart() {
+        //查询购物车中所有的数据
+        //先获取当前微信用户的id
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(userId)
+                .build();
+        List<ShoppingCart> ShoppingCard = shoppingCartMapper.list(shoppingCart);
+        return ShoppingCard;
     }
 }

@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.entity.ShoppingCart;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ShoppingCartMapper {
     * */
     //select * from shopping_card where dish_id ? and dish_flavor
     //select * from shopping_card where user_id and
-    //永动态条件查询
+    //永动态条件查询   /*查询购物车中所有数据*/
     List<ShoppingCart> list(ShoppingCart shoppingCart);
 
     /*
@@ -35,4 +36,7 @@ public interface ShoppingCartMapper {
     @Insert("insert into shopping_cart(name,user_id,dish_id,setmeal_id,dish_flavor,number,amount,image,create_time)"+
     "values(#{name},#{userId},#{dishId},#{setmealId},#{dishFlavor},#{number},#{amount},#{image},#{createTime})")
     void insert(ShoppingCart shoppingCart);
+
+
+
 }
