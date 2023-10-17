@@ -22,6 +22,13 @@ public interface UserMapper {
     User getByOpenid(String openid);
 
     /*
+    * 根据用户id来查询用户
+    * */
+    @Select("select * from user where id = #{id}")
+    User getById(Long userId);
+
+
+    /*
     * 如果是新用户到数据库中插入数据
     * */
     void insert(User user);

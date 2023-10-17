@@ -27,7 +27,7 @@ import java.util.List;
 @Api(tags = "C端购物车相关接口")
 public class ShoppingCartController {
     @Autowired
-    private ShoppingCartService shoppingCardService;
+    private ShoppingCartService shoppingCartService;
     /*
     添加购物车
    */
@@ -35,7 +35,7 @@ public class ShoppingCartController {
     @PostMapping("/add")
     public Result add(@RequestBody ShoppingCartDTO shoppingCartDTO){
         log.info("添加购物车：商品信息为：{}",shoppingCartDTO);
-        shoppingCardService.addShoppingCart(shoppingCartDTO);
+        shoppingCartService.addShoppingCart(shoppingCartDTO);
         return Result.success();
     }
 
@@ -45,7 +45,7 @@ public class ShoppingCartController {
     @GetMapping("/list")
     @ApiOperation("查看购物车")
     public Result<List<ShoppingCart>> list(){
-        List<ShoppingCart> list=shoppingCardService.showShoppingCart();
+        List<ShoppingCart> list=shoppingCartService.showShoppingCart();
 
         return Result.success(list);
     }
@@ -56,10 +56,21 @@ public class ShoppingCartController {
     @DeleteMapping("/clean")
     @ApiOperation("清空购物车")
     public Result delete(){
-        shoppingCardService.delete();
+        shoppingCartService.delete();
         return Result.success();
     }
-
+    /**
+     * 删除购物车中一个商品
+     * @param shoppingCartDTO
+     * @return
+     */
+    @PostMapping("/sub")
+    @ApiOperation("删除购物车中一个商品")
+    public Result sub(@RequestBody ShoppingCartDTO shoppingCartDTO){
+        log.info("删除购物车中一个商品，商品：{}", shoppingCartDTO);
+        shoppingCartService.subShoppingCart(shoppingCartDTO);
+        return Result.success();
+    }
 
 
 }

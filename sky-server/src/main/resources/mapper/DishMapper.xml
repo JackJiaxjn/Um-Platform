@@ -20,7 +20,7 @@
             </if>
 
             <if test="categoryId!=null">
-                and d.categoryId like concat('%',#{categoryId},'%')
+                and d.category_id like concat('%',#{categoryId},'%')
             </if>
 
             <if test="status!=null">
