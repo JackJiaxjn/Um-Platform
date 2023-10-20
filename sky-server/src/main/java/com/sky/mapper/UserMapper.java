@@ -4,6 +4,8 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Map;
+
 /**
  * @ClassName UserMapper
  * @Description TODO
@@ -32,4 +34,9 @@ public interface UserMapper {
     * 如果是新用户到数据库中插入数据
     * */
     void insert(User user);
+
+    /*
+    * 查询当天的用户总数量
+    * */
+    Integer countByMap(Map map);
 }
