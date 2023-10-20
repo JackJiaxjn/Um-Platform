@@ -42,7 +42,7 @@ public interface EmployeeMapper {
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
     /**
-     * 启用和禁用员工 账号
+     * 编辑员工信息
      */
     //动态修改需要在mapper映射文件中写sql语句
     //进行公共字段的填充，加入已经自己好的注解,指定是插入跟新的填充
